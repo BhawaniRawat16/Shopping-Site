@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+</head>
+<body>
+    <div id="product-details"></div>
+
+    <script>
+        // Parse the product ID from the URL query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = parseInt(urlParams.get('id'));
+
+        // Fetch product details based on the ID and display them
+        fetch(`https://fakestoreapi.com/products/${productId}`)
+            .then(response => response.json())
+            .then(product => {
+                const productElement = document.getElementById('product-details');
+                const imageElement = document.createElement('img');
+            imageElement.src = product.thumbnail;
+            imageElement.alt = product.title;
+            imageElement.classList.add('product-image');
+            productElement.appendChild(imageElement);
+
+            const detailsElement = document.createElement('div');
+            detailsElement.classList.add('product-details');
+            detailsElement.innerHTML = `
+                <h1>
+                    <h2>${product.title}</h2>
+                    
+                    <p>Price: $${product.price}</p>
+                    <p>Rating: ${product.rating}</p>
+                    <p>Stock: ${product.stock}</p>
+
+                </h1>
+            `;
+            productElement.appendChild(detailsElement);
+
+            productsListElement.appendChild(productElement);
+          
+            })
+            .catch(error => {
+                console.error('Error fetching product details:', error);
+            });
+    </script>
+</body>
+</html>
